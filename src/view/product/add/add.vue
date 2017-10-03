@@ -78,4 +78,5 @@
     width: 67%;
     padding-left: 33%;
   }
+
 </style>
