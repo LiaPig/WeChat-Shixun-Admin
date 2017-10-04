@@ -1,28 +1,17 @@
 <template>
-  <div class="addUser_panel">
+  <div class="modifyUser_panel">
     <!--表单开始-->
     <el-form label-position="right"
              label-width="80px"
-             ref="form"
              :model="form"
-             :rules="user_rules">
+             :rules="user_rules"
+             v-loading="load_data"
+             element-loading-text="拼命加载中">
       <!--用户名开始-->
       <el-form-item label="用户名" prop="username" class="item">
         <el-input v-model="form.username"></el-input>
       </el-form-item>
       <!--用户名结束-->
-
-      <!--密码开始-->
-      <el-form-item label="密码"  prop="password" class="item">
-        <el-input v-model="form.password" type="password"></el-input>
-      </el-form-item>
-      <!--密码结束-->
-
-      <!--确认密码开始-->
-      <el-form-item label="确认密码"  prop="checkPass" class="item">
-        <el-input v-model="form.checkPass" type="password"></el-input>
-      </el-form-item>
-      <!--确认密码结束-->
 
       <!--性别开始-->
       <el-form-item label="性别" prop="gender" class="item">
@@ -49,8 +38,12 @@
 
     <!--按钮组开始-->
     <el-button-group class="group">
-      <el-button @click="$router.back()" type="primary" icon="arrow-left">返回上层</el-button>
-      <el-button @click="on_submit_form" :loading="on_submit_loading" type="success">新增商品 <i class="el-icon-plus"></i> </el-button>
+      <router-link to="/user">
+        <el-button type="primary" icon="arrow-left">返回用户列表</el-button>
+      </router-link>
+      <el-button @click="on_submit_form" :loading="on_submit_loading" type="success">
+        确认修改 <i class="el-icon-edit"></i>
+      </el-button>
     </el-button-group>
     <!--按钮组结束-->
   </div>
@@ -70,8 +63,6 @@
       return {
         form: {
           username: null,
-          password: null,
-          checkPass: null,
           gender: null,
           mobilePhone: null,
           email: null
@@ -105,33 +96,47 @@
             }
           ]
         },
-        on_submit_loading: false
+        on_submit_loading: false,
+        load_data: false
       }
     },
+    created () {
+      const that = this
+      that.route_id = that.$route.params.id
+      that.get_user_data(that.route_id)
+    },
     methods: {
+      // 根据上一页面传过来的id获取整个用户信息
+      get_user_data: function (id) {
+        const that = this
+        that.load_data = true
+        that.$http.get('/api/users/' + id)
+          .then((response) => {
+            that.form = response.body.data
+            that.load_data = false
+          })
+          .catch(function (error) {
+            console.error(error)
+            that.load_data = false
+          })
+      },
+      // 提交修改后的表单
       on_submit_form: function () {
         const that = this
-        that.$refs.form.validate((valid) => {
-          if (!valid) return false
-          that.on_submit_loading = true
-          that.form.status = 1
-          that.$http.post('/api/users', that.form)
-            .then((response) => {
-              if (response.body.success) {
-                that.$message.success('创建成功！')
-                that.on_submit_loading = false
-                setTimeout(this.$router.back(), 2000)
-              }
-              else {
-                that.$message.error(response.body.message)
-                console.log(response.body)
-                that.on_submit_loading = false
-              }
-            })
-            .catch(() => {
-              this.on_submit_loading = false
-            })
-        })
+        that.on_submit_loading = true
+        that.$http.post('/api/users/' + that.route_id, that.form)
+          .then((response) => {
+            if (response.body.success) {
+              that.$message.success('修改成功！')
+              that.on_submit_loading = false
+              setTimeout(this.$router.back(), 2000)
+            }
+            else {
+              that.$message.error(response.body.message)
+              console.log(response.body)
+              that.on_submit_loading = false
+            }
+          })
       }
     }
   }

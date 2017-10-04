@@ -57,6 +57,7 @@
         </div>
         <!--分类标签结束-->
 
+        <!--图片开始-->
         <div class="productImages">
           <div class="title">图片</div>
           <div class="content" v-for="(item, index) in product_data.productImages">
@@ -69,12 +70,12 @@
                 <p>{{item.url}}</p>
                 <img :src="item.url" style="width: 200px;height: 200px;"/>
               </div>
-
               <el-button  slot="reference">查看图片{{index+1}}</el-button>
             </el-popover>
-
           </div>
         </div>
+        <!--图片结束-->
+
       </el-form>
       <!--表单结束-->
 

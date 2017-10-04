@@ -311,7 +311,7 @@
             update_time: '2017-09-27 23:56:00'
           }
         ],
-        load_data: false
+        load_data: true
       }
     },
     components: {

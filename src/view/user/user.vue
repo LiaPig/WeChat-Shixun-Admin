@@ -15,6 +15,8 @@
         stripe
         border
         :data="table_data"
+        v-loading="load_data"
+        element-loading-text="拼命加载中"
         style="width: 100%">
         <!--用户ID开始-->
         <el-table-column
@@ -37,16 +39,9 @@
         <!--性别开始-->
         <el-table-column
           sortable
-          label="性别 "
+          label="性别"
+          prop="gender"
           width="100px">
-            <template scope="props">
-              <div v-if="props.row.gender == 1">
-                男
-              </div>
-              <div v-else>
-                女
-              </div>
-            </template>
         </el-table-column>
         <!--性别结束-->
 
@@ -78,7 +73,7 @@
         <!--操作按钮组开始-->
         <el-table-column
           label="操作"
-          width="150">
+          width="200">
           <template scope="props">
             <!--查看详情按钮开始-->
             <router-link :to="{ name: 'userDetails',
@@ -89,6 +84,11 @@
               </el-button>
             </router-link>
             <!--查看详情按钮结束-->
+            <!--删除按钮开始-->
+            <el-button @click="delete_data(props.row)" type="danger" size="small" icon="close">
+              删除
+            </el-button>
+            <!--删除按钮结束-->
           </template>
         </el-table-column>
         <!--操作按钮组结束-->
@@ -105,52 +105,13 @@
   import ElButton from '../../../node_modules/element-ui/packages/button/src/button'
   import ElButtonGroup from '../../../node_modules/element-ui/packages/button/src/button-group'
   export default {
+    created () {
+      const that = this
+      that.get_table_data()
+    },
     data () {
       return {
-        table_data: [
-          {
-            id: '432428031852679168',
-            status: 1,
-            username: 'LeeWaiHo',
-            avatarUrl: 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eoH73h1X5HwGDKediaEtxEE99eRUicH3doUBQlatW2ibGulG0Cm6PiaM0a1B95LR66PwwS3RuS9n3IdDg/0',
-            gender: 1,
-            mobilePhone: '15521079794',
-            email: null,
-            roles: [
-              {
-                id: '429732071536070656',
-                name: '普通用户',
-                roleKey: 'ROLE_USER',
-                description: '普通用户哦',
-                create_time: '2017-09-25 11:36:45',
-                update_time: '2017-09-25 11:36:45'
-              }
-            ],
-            create_time: '2017-10-02 22:09:32',
-            update_time: '2017-10-02 22:09:32'
-          },
-          {
-            id: '429731646577577984',
-            status: 1,
-            username: 'Lia',
-            avatarUrl: 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eoH73h1X5HwGDKediaEtxEE99eRUicH3doUBQlatW2ibGulG0Cm6PiaM0a1B95LR66PwwS3RuS9n3IdDg/0',
-            gender: 0,
-            mobilePhone: '13246825048',
-            email: '418607528@qq.com',
-            roles: [
-              {
-                id: '429732071536070656',
-                name: '普通用户',
-                roleKey: 'ROLE_USER',
-                description: '普通用户哦',
-                create_time: '2017-09-25 11:36:45',
-                update_time: '2017-09-25 11:36:45'
-              }
-            ],
-            create_time: '2017-09-25 11:35:03',
-            update_time: '2017-09-25 11:37:43'
-          }
-        ],
+        table_data: [],
         load_data: false
       }
     },
@@ -160,6 +121,43 @@
       leftNav,
       topNav,
       panelTitle
+    },
+    methods: {
+      //  与后台获取用户数据
+      get_table_data: function () {
+        const that = this
+        that.load_data = true
+        that.$http.get('/api/users')
+          .then((response) => {
+            that.table_data = response.body.data.content
+            that.load_data = false
+          })
+          .catch(function (error) {
+            console.error(error)
+          })
+      },
+      //  刷新数据
+      on_refresh: function () {
+        const that = this
+        that.get_table_data()
+      },
+      //  删除指定用户
+      delete_data: function (user) {
+        const that = this
+        that.$http.delete('/api/users/' + user.id)
+          .then((response) => {
+            if (response.body.success) {
+              that.$message.success('删除成功！')
+              that.on_submit_loading = false
+              setTimeout(that.on_refresh(), 2000)
+            }
+            else {
+              that.$message.error(response.body.message)
+              console.log(response.body)
+              that.on_submit_loading = false
+            }
+          })
+      }
     }
   }
 </script>
