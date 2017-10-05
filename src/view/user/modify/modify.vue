@@ -7,9 +7,15 @@
              :rules="user_rules"
              v-loading="load_data"
              element-loading-text="拼命加载中">
+      <!--id开始-->
+      <el-form-item label="id" prop="id" class="item">
+        <el-input v-model="form.id" disabled="true"></el-input>
+      </el-form-item>
+      <!--id结束-->
+
       <!--用户名开始-->
       <el-form-item label="用户名" prop="username" class="item">
-        <el-input v-model="form.username"></el-input>
+        <el-input v-model="form.username" disabled="true"></el-input>
       </el-form-item>
       <!--用户名结束-->
 
@@ -68,6 +74,9 @@
           email: null
         },
         user_rules: {
+          id: [
+            {required: true, message: '请输入id', trigger: 'blur'}
+          ],
           username: [
             {required: true, message: '请输入用户名', trigger: 'blur'}
           ],
