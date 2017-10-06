@@ -30,8 +30,7 @@
           :key="tag.id"
           type="success"
           :closable="true"
-          :close-transition="false"
-          @close="onCloseTag"
+          @close="onCloseTag(tag)"
         >
           {{tag.name}}
         </el-tag>
@@ -151,11 +150,16 @@
       submitForm () {
         this.product_data.productTags = this.checkOptions
         console.log(this.product_data)
-//        this.$http.post('/api/products', this.product_data)
-//          .then(function (response) {
-//            console.log('好像可以了?')
-//            console.log(response)
-//          })
+        this.$http.post('/api/products', this.product_data)
+          .then(function (response) {
+            if (response.body.success) {
+              this.$message.success('新增成功咯')
+              setTimeout(this.$router.push('/product'), 2000)
+            } else {
+              this.$message.error(response.body.message)
+              console.log(response.body)
+            }
+          })
       },
       onClickedToAddTag () {
         this.dialogFormVisible = true
@@ -176,9 +180,10 @@
       },
       onConfirmCheck () {
         console.log(this.checkOptions)
+        this.dialogFormVisible = false
       },
       handleCheckAllChange (event) {
-        this.product_data.productTags = event.target.checked ? this.productTags : []
+        this.checkOptions = event.target.checked ? this.productTags : []
         this.isIndeterminate = false
       },
       handleCheckedCitiesChange (value) {
@@ -187,8 +192,7 @@
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.productTags.length
       },
       onCloseTag (tag) {
-        console.log('一脸懵逼')
-        console.log(this.checkOptions.indexOf(tag))
+        this.checkOptions.splice(this.checkOptions.indexOf(tag), 1)
       }
     }
   }
