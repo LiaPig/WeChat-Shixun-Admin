@@ -41,7 +41,7 @@
             </el-checkbox-group>
           </div>
           <div class="content" v-if="product_data.productTags.length == 0">
-            此商品无标签
+            此商品无属性标签
           </div>
         </div>
         <!--属性标签结束-->
@@ -53,6 +53,9 @@
             <el-checkbox-group v-model="product_data.productTags" fill="#324057" text-color="#a4aebd">
               <el-checkbox-button v-for="(item, index) in product_data.productTags" :label="'标签'+ index" :key="index" v-if="item.type=='productCategory'">{{item.name}}</el-checkbox-button>
             </el-checkbox-group>
+          </div>
+          <div class="content" v-if="product_data.productTags.length == 0">
+            此商品无分类标签
           </div>
         </div>
         <!--分类标签结束-->
@@ -68,7 +71,7 @@
               trigger="hover">
               <div style="display: inline-block;width: 200px;word-break:break-all;">
                 <p>{{item.url}}</p>
-                <img :src="item.url" style="width: 200px;height: 200px;"/>
+                <img :src="item.url" style="width: 150px;height: 150px;"/>
               </div>
               <el-button  slot="reference">查看图片{{index+1}}</el-button>
             </el-popover>
@@ -100,130 +103,31 @@
   export default {
     components: {ElButtonGroup},
     created () {
+      const that = this
       this.route_id = this.$route.params.id
+      that.get_product_data(that.route_id)
     },
     data () {
       return {
         route_id: this.$route.params.id,
         product_data: {
-          id: 429754044903329792,
-          status: 1,
-          name: '卖萌猪崽',
-          basePrice: 0.02,
-          description: '可爱的猪崽x4',
-          productTags: [
-            {
-              id: 429772384753422336,
-              sort: 100,
-              status: 1,
-              name: '热销推荐',
-              tagOptions: [],
-              type: 'productCategory',
-              create_time: '2017-09-25 14:16:56',
-              update_time: '2017-09-25 15:56:35'
-            },
-            {
-              id: 429763550097969152,
-              sort: 100,
-              status: 1,
-              name: '体重',
-              tagOptions: [
-                {
-                  id: 429763550307684352,
-                  sort: 0,
-                  status: 1,
-                  optionName: '1kg',
-                  value: 0.01,
-                  type: 'addPoint',
-                  defaultOption: true,
-                  create_time: '2017-09-25 13:41:50',
-                  update_time: '2017-09-25 13:41:50'
-                },
-                {
-                  id: 429763550416736256,
-                  sort: 0,
-                  status: 1,
-                  optionName: '2kg',
-                  value: 0.02,
-                  type: 'addPoint',
-                  defaultOption: false,
-                  create_time: '2017-09-25 13:41:50',
-                  update_time: '2017-09-25 13:41:50'
-                }
-              ],
-              type: 'product',
-              create_time: '2017-09-25 13:41:50',
-              update_time: '2017-09-25 13:41:50'
-            },
-            {
-              id: 430642557748252672,
-              sort: 100,
-              status: 1,
-              name: '颜色',
-              tagOptions: [
-                {
-                  id: 430642561791561728,
-                  sort: 99,
-                  status: 1,
-                  optionName: '粉色',
-                  value: 0,
-                  type: 'addPoint',
-                  defaultOption: false,
-                  create_time: '2017-09-27 23:54:42',
-                  update_time: '2017-09-27 23:54:42'
-                },
-                {
-                  id: 430642562114523136,
-                  sort: 100,
-                  status: 1,
-                  optionName: '白色',
-                  value: 0,
-                  type: 'addPoint',
-                  defaultOption: true,
-                  create_time: '2017-09-27 23:54:43',
-                  update_time: '2017-09-27 23:54:43'
-                }
-              ],
-              type: 'product',
-              create_time: '2017-09-27 23:54:43',
-              update_time: '2017-09-27 23:54:43'
-            },
-            {
-              id: 430468081542762496,
-              sort: 99,
-              status: 1,
-              name: '单品区',
-              tagOptions: [],
-              type: 'productCategory',
-              create_time: '2017-09-27 12:21:23',
-              update_time: '2017-09-27 12:22:17'
-            }
-          ],
-          productImages: [
-            {
-              id: 429735194702909440,
-              sort: 100,
-              status: 1,
-              url: 'http://cache.lovethispic.com/uploaded_images/230359-Cute-Little-Piggy.jpg',
-              type: 'product',
-              description: '商品',
-              create_time: '2017-09-25 11:49:09',
-              update_time: '2017-09-25 11:49:09'
-            },
-            {
-              id: 429735194702909441,
-              sort: 100,
-              status: 1,
-              url: 'http://n1image.hjfile.cn/mh/2016/09/13/da743d475266415cf27945aa06095c41.jpg',
-              type: 'product',
-              description: '商品',
-              create_time: '2017-09-25 11:49:09',
-              update_time: '2017-09-25 11:49:09'
-            }
-          ],
-          create_time: '2017-09-25 13:04:04',
-          update_time: '2017-09-27 23:56:00'
         }
+      }
+    },
+    methods: {
+      //   根据上一页面传过来的id获取整个商品信息
+      get_product_data: function (id) {
+        const that = this
+        that.load_data = true
+        that.$http.get('/api/products/' + id )
+          .then((response) => {
+            that.product_data = response.body.data
+            that.load_data = false
+          })
+          .catch(function (error) {
+            console.error(error)
+            that.load_data = false
+          })
       }
     }
   }
