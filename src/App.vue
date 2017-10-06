@@ -62,6 +62,7 @@
   height: 100%;
   margin-top: -8px;
   margin-left: -8px;
+  overflow: hidden;
 }
 .container {
   position: absolute;
@@ -89,10 +90,11 @@
 .right .product_panel .panel_body {
   position: fixed;
   top: 100px;
+  height: 500px;
   width: calc(100% - 200px - 5px);
   text-align: left;
   background-color: #fff;
   padding-left: 5px;
-  overflow: auto;
+  overflow-y: auto;
 }
 </style>

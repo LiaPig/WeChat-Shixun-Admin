@@ -7,6 +7,10 @@ import Product from 'View/product/product.vue'
 import ProductDetails from 'View/product/details/details.vue'
 import ProductAdd from 'View/product/add/add.vue'
 import ProductModify from 'View/product/modify/modify.vue'
+import Picture from 'View/picture/picture.vue'
+import PictureDetails from 'View/picture/details/details.vue'
+import PictureAdd from 'View/picture/add/add.vue'
+import PictureModify from 'View/picture/modify/modify.vue'
 
 import User from 'View/user/user.vue'
 import UserAdd from 'View/user/add/add.vue'
@@ -67,6 +71,39 @@ const routes = [
           name: '修改商品信息页面'
         },
         component: ProductModify
+      },
+      // 图片页面
+      {
+        path: '/picture',
+        name: 'picture',
+        component: Picture,
+        meta: {
+          name: '商品管理'
+        }
+      },
+      {
+        path: '/picture/details',
+        name: 'pictureDetails',
+        meta: {
+          name: '商品详情页面'
+        },
+        component: PictureDetails
+      },
+      {
+        path: '/picture/add',
+        name: 'pictureAdd',
+        meta: {
+          name: '新增商品页面'
+        },
+        component: PictureAdd
+      },
+      {
+        path: '/picture/modify',
+        name: 'pictureModify',
+        meta: {
+          name: '修改商品信息页面'
+        },
+        component: PictureModify
       },
       // 用户页面
       {

@@ -133,12 +133,12 @@
       on_submit_form: function () {
         const that = this
         that.on_submit_loading = true
-        that.$http.post('/api/users/' + that.route_id, that.form)
+        that.$http.post('/api/users/', that.form)
           .then((response) => {
             if (response.body.success) {
               that.$message.success('修改成功！')
               that.on_submit_loading = false
-              setTimeout(this.$router.back(), 2000)
+              setTimeout(this.$router.push('/user'), 2000)
             }
             else {
               that.$message.error(response.body.message)

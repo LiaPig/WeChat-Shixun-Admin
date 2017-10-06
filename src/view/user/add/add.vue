@@ -50,7 +50,7 @@
     <!--按钮组开始-->
     <el-button-group class="group">
       <el-button @click="$router.back()" type="primary" icon="arrow-left">返回上层</el-button>
-      <el-button @click="on_submit_form" :loading="on_submit_loading" type="success">新增商品 <i class="el-icon-plus"></i> </el-button>
+      <el-button @click="on_submit_form" :loading="on_submit_loading" type="success">新增用户 <i class="el-icon-plus"></i> </el-button>
     </el-button-group>
     <!--按钮组结束-->
   </div>

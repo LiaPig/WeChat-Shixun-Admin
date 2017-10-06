@@ -1,15 +1,15 @@
 <template>
   <div>
-    <!--顶部的 刷新 以及 新增商品 按钮组开始-->
+    <!--顶部的 刷新 以及 新增图片 按钮组开始-->
     <el-button-group class="group">
       <el-button @click.stop="on_refresh" size="small" type="primary" icon="loading">刷新</el-button>
-      <router-link :to="{name: 'productAdd'}" tag="span">
-        <el-button type="primary" size="small" icon="plus">新增商品</el-button>
+      <router-link :to="{name: 'pictureAdd'}" tag="span">
+        <el-button type="primary" size="small" icon="plus">新增图片</el-button>
       </router-link>
     </el-button-group>
-    <!--顶部的 刷新 以及 新增商品 按钮组结束-->
+    <!--顶部的 刷新 以及 新增图片 按钮组结束-->
 
-    <!--商品表开始-->
+    <!--图片表开始-->
     <div>
       <el-table
         stripe
@@ -18,50 +18,63 @@
         style="width: 100%"
         v-loading="load_data"
         element-loading-text="拼命加载中">
-        <!--商品ID开始-->
+        <!--图片ID开始-->
         <el-table-column
           sortable
-          label="商品ID"
+          label="图片ID"
           prop="id"
           width="220px">
         </el-table-column>
-        <!--商品ID结束-->
+        <!--图片ID结束-->
 
-        <!--商品名称开始-->
+        <!--图片url开始-->
         <el-table-column
           sortable
-          label="商品名称"
-          prop="name"
-          width="180px">
+          label="图片url">
+          <template scope="props">
+            {{props.row.url}}
+            <el-popover
+              placement="right"
+              width="150"
+              trigger="hover">
+              <div>
+                <!--style="display: inline-block;width: 200px;word-break:break-all;"-->
+                <img :src="props.row.url" style="width: 150px;height: 150px;"/>
+              </div>
+              <el-button  slot="reference" type="warning" size="small" style="margin-left: 5px"> 点击查看 </el-button>
+            </el-popover>
+          </template>
         </el-table-column>
-        <!--商品名称结束-->
+        <!--图片url结束-->
 
-        <!--底价开始-->
+        <!--类型开始-->
         <el-table-column
           sortable
-          label="底价 "
-          prop="basePrice"
+          label="类型 "
+          prop="type"
           width="100px">
         </el-table-column>
-        <!--底价结束-->
+        <!--类型结束-->
 
         <!--详细描述开始-->
         <el-table-column
+          sortable
           label="详细描述 "
-          prop="description">
+          prop="description"
+          width="120px">
         </el-table-column>
         <!--详细描述结束-->
 
-        <!--商品状态开始-->
+        <!--图片状态开始-->
         <el-table-column
-          label="商品状态"
+          label="图片状态"
           width="100px">
           <template scope="props">
             <div v-if="props.row.status"> 正常 </div>
             <div v-if="props.row.status === 0"> 下架 </div>
           </template>
         </el-table-column>
-        <!--商品状态结束-->
+        <!--图片状态结束-->
 
         <!--操作按钮组开始-->
         <el-table-column
@@ -69,7 +82,7 @@
           width="200">
           <template scope="props">
             <!--查看详情按钮开始-->
-            <router-link :to="{ name: 'productDetails',
+            <router-link :to="{ name: 'pictureDetails',
                                 params: {id: props.row.id}
                               }">
               <el-button type="success" size="small" icon="search">
@@ -97,7 +110,7 @@
         <!--操作按钮组结束-->
       </el-table>
     </div>
-    <!--商品表结束-->
+    <!--图片表结束-->
   </div>
 </template>
 
@@ -126,11 +139,11 @@
       panelTitle
     },
     methods: {
-      //  与后台获取商品数据
+      //  与后台获取图片数据
       get_table_data: function () {
         const that = this
         that.load_data = true
-        that.$http.get('/api/products')
+        that.$http.get('/api/images')
           .then((response) => {
             that.table_data = response.body.data.content
             that.load_data = false
@@ -145,7 +158,38 @@
         const that = this
         that.get_table_data()
       },
-
+      //  删除指定图片
+      delete_data: function (image) {
+        const that = this
+        that.$confirm('此操作将永久删除该图片, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          that.$http.delete('/api/images/' + image.id)
+            .then((response) => {
+              if (response.body.success) {
+                that.$message.success('删除成功！')
+                that.on_submit_loading = false
+                setTimeout(that.on_refresh(), 2000)
+              }
+              else {
+                that.$message.error(response.body.message)
+                console.log(response.body)
+                that.on_submit_loading = false
+              }
+            })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      }
     }
   }
 </script>
