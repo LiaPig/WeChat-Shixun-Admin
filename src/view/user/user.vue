@@ -134,6 +134,7 @@
           })
           .catch(function (error) {
             console.error(error)
+            that.load_data = false
           })
       },
       //  刷新数据
@@ -144,19 +145,34 @@
       //  删除指定用户
       delete_data: function (user) {
         const that = this
-        that.$http.delete('/api/users/' + user.id)
-          .then((response) => {
-            if (response.body.success) {
-              that.$message.success('删除成功！')
-              that.on_submit_loading = false
-              setTimeout(that.on_refresh(), 2000)
-            }
-            else {
-              that.$message.error(response.body.message)
-              console.log(response.body)
-              that.on_submit_loading = false
-            }
+        that.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
           })
+          that.$http.delete('/api/users/' + user.id)
+            .then((response) => {
+              if (response.body.success) {
+                that.$message.success('删除成功！')
+                that.on_submit_loading = false
+                setTimeout(that.on_refresh(), 2000)
+              }
+              else {
+                that.$message.error(response.body.message)
+                console.log(response.body)
+                that.on_submit_loading = false
+              }
+            })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
       }
     }
   }
