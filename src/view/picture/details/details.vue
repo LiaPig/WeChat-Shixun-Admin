@@ -11,31 +11,31 @@
 
       <!--id开始-->
       <el-form-item label="id" class="item">
-        <el-input v-model="picture_data.id"></el-input>
+        <el-input v-model="picture_data.id" :disabled="true"></el-input>
       </el-form-item>
       <!--id结束-->
 
       <!--图片url开始-->
       <el-form-item label="图片url" class="item">
-        <el-input  type="textarea" autosize v-model="picture_data.url"></el-input>
+        <el-input  type="textarea" autosize v-model="picture_data.url" :disabled="true"></el-input>
       </el-form-item>
       <!--图片url结束-->
 
       <!--状态开始-->
       <el-form-item label="状态" class="item">
-        <el-input v-model="picture_data.status"></el-input>
+        <el-input v-model="picture_data.status" :disabled="true"></el-input>
       </el-form-item>
       <!--状态结束-->
 
       <!--类型开始-->
       <el-form-item label="类型" class="item">
-        <el-input v-model="picture_data.type"></el-input>
+        <el-input v-model="picture_data.type" :disabled="true"></el-input>
       </el-form-item>
       <!--类型结束-->
 
       <!--详细描述开始-->
       <el-form-item label="详细描述" class="item">
-        <el-input v-model="picture_data.description"></el-input>
+        <el-input v-model="picture_data.description" :disabled="true"></el-input>
       </el-form-item>
       <!--详细描述结束-->
     </el-form>
