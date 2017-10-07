@@ -12,10 +12,18 @@ import PictureDetails from 'View/picture/details/details.vue'
 import PictureAdd from 'View/picture/add/add.vue'
 import PictureModify from 'View/picture/modify/modify.vue'
 
+import Tag from 'View/tag/tag.vue'
+import TagDetails from 'View/tag/details/details.vue'
+import TagAdd from 'View/tag/add/add.vue'
+import TagModify from 'View/tag/modify/modify.vue'
 import User from 'View/user/user.vue'
 import UserAdd from 'View/user/add/add.vue'
 import UserDetails from 'View/user/details/details.vue'
 import UserModify from 'View/user/modify/modify.vue'
+import Role from 'View/role/role.vue'
+import RoleAdd from 'View/role/add/add.vue'
+import RoleDetails from 'View/role/details/details.vue'
+import RoleModify from 'View/role/modify/modify.vue'
 
 Vue.use(Router)
 
@@ -105,6 +113,39 @@ const routes = [
         },
         component: PictureModify
       },
+      // 标签页面
+      {
+        path: '/tag',
+        name: 'tag',
+        component: Tag,
+        meta: {
+          name: '标签管理'
+        }
+      },
+      {
+        path: '/tag/details',
+        name: 'tagDetails',
+        meta: {
+          name: '标签详情页面'
+        },
+        component: TagDetails
+      },
+      {
+        path: '/tag/add',
+        name: 'tagAdd',
+        meta: {
+          name: '新增标签页面'
+        },
+        component: TagAdd
+      },
+      {
+        path: '/tag/modify',
+        name: 'tagModify',
+        meta: {
+          name: '修改标签信息页面'
+        },
+        component: TagModify
+      },
       // 用户页面
       {
         path: '/user',
@@ -137,6 +178,39 @@ const routes = [
           name: '修改用户信息页面'
         },
         component: UserModify
+      },
+      // 角色页面
+      {
+        path: '/role',
+        name: 'role',
+        component: Role,
+        meta: {
+          name: '用户管理'
+        }
+      },
+      {
+        path: '/role/details',
+        name: 'roleDetails',
+        meta: {
+          name: '角色详情页面'
+        },
+        component: RoleDetails
+      },
+      {
+        path: '/role/add',
+        name: 'roleAdd',
+        meta: {
+          name: '新增角色页面'
+        },
+        component: RoleAdd
+      },
+      {
+        path: '/role/modify',
+        name: 'roleModify',
+        meta: {
+          name: '修改角色信息页面'
+        },
+        component: RoleModify
       }
     ]
   }

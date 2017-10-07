@@ -1,15 +1,15 @@
 <template>
-  <div class="user_panel">
-    <!--顶部的 刷新 以及 新增用户 按钮组开始-->
+  <div class="tag_panel">
+    <!--顶部的 刷新 以及 新增标签 按钮组开始-->
     <el-button-group class="group">
       <el-button @click.stop="on_refresh" size="small" type="primary" icon="loading">刷新</el-button>
-      <router-link :to="{name: 'userAdd'}" tag="span">
-        <el-button type="primary" size="small" icon="plus">新增用户</el-button>
+      <router-link :to="{name: 'tagAdd'}" tag="span">
+        <el-button type="primary" size="small" icon="plus">新增标签</el-button>
       </router-link>
     </el-button-group>
-    <!--顶部的 刷新 以及 新增用户 按钮组结束-->
+    <!--顶部的 刷新 以及 新增标签 按钮组结束-->
 
-    <!--用户表开始-->
+    <!--标签表开始-->
     <div>
       <el-table
         stripe
@@ -18,44 +18,34 @@
         v-loading="load_data"
         element-loading-text="拼命加载中"
         style="width: 100%">
-        <!--用户ID开始-->
+        <!--标签ID开始-->
         <el-table-column
           sortable
-          label="用户ID"
-          prop="id"
+          label="标签ID"
+          prop="id">
+        </el-table-column>
+        <!--标签ID结束-->
+
+        <!--标签名称开始-->
+        <el-table-column
+          sortable
+          label="标签名称"
+          prop="name"
           width="200px">
         </el-table-column>
-        <!--用户ID结束-->
+        <!--标签名称结束-->
 
-        <!--用户名称开始-->
+        <!--类型开始-->
         <el-table-column
           sortable
-          label="用户名称"
-          prop="username"
-          width="150px">
+          label="类型"
+          prop="type">
         </el-table-column>
-        <!--用户名称结束-->
-
-        <!--性别开始-->
-        <el-table-column
-          sortable
-          label="性别"
-          prop="gender"
-          width="100px">
-        </el-table-column>
-        <!--性别结束-->
-
-        <!--电话号码开始-->
-        <el-table-column
-          label="电话号码 "
-          prop="mobilePhone">
-        </el-table-column>
-        <!--电话号码结束-->
+        <!--类型结束-->
 
         <!--图片状态开始-->
         <el-table-column
-          label="图片状态"
-          width="100px">
+          label="图片状态">
           <template scope="props">
             <div v-if="props.row.status"> 正常 </div>
             <div v-if="props.row.status === 0"> 下架 </div>
@@ -63,22 +53,13 @@
         </el-table-column>
         <!--图片状态结束-->
 
-        <!--电子邮箱开始-->
-        <el-table-column
-          width="200px"
-          label="电子邮箱 "
-          prop="email">
-        </el-table-column>
-        <!--电子邮箱结束-->
-
-
         <!--操作按钮组开始-->
         <el-table-column
           label="操作"
           width="200">
           <template scope="props">
             <!--查看详情按钮开始-->
-            <router-link :to="{ name: 'userDetails',
+            <router-link :to="{ name: 'tagDetails',
                                 params: {id: props.row.id}
                               }">
               <el-button type="success" size="small" icon="search">
@@ -96,7 +77,7 @@
         <!--操作按钮组结束-->
       </el-table>
     </div>
-    <!--用户表结束-->
+    <!--标签表结束-->
   </div>
 </template>
 
@@ -125,11 +106,11 @@
       panelTitle
     },
     methods: {
-      //  与后台获取用户数据
+      //  与后台获取标签数据
       get_table_data: function () {
         const that = this
         that.load_data = true
-        that.$http.get('/api/users')
+        that.$http.get('/api/tags')
           .then((response) => {
             that.table_data = response.body.data.content
             that.load_data = false
@@ -144,10 +125,10 @@
         const that = this
         that.get_table_data()
       },
-      //  删除指定用户
-      delete_data: function (user) {
+      //  删除指定标签
+      delete_data: function (tag) {
         const that = this
-        that.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+        that.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -156,7 +137,7 @@
             type: 'success',
             message: '删除成功!'
           })
-          that.$http.delete('/api/users/' + user.id)
+          that.$http.delete('/api/tags/' + tag.id)
             .then((response) => {
               if (response.body.success) {
                 that.$message.success('删除成功！')

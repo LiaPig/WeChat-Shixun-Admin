@@ -55,9 +55,19 @@
             icon: 'el-icon-document'
           },
           {
+            title: '标签管理',
+            path: '/tag',
+            icon: 'el-icon-star-off'
+          },
+          {
             title: '用户管理',
             path: '/user',
             icon: 'el-icon-setting'
+          },
+          {
+            title: '角色管理',
+            path: '/role',
+            icon: 'el-icon-information'
           }
         ]
       }
