@@ -41,6 +41,7 @@
           type="success"
           :close-tranfer="false"
           :closable="true"
+          @close="closeTag(tag)"
         >
           {{tag.name}}
         </el-tag>
@@ -50,7 +51,7 @@
             <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选
             </el-checkbox>
             <div style="margin: 15px 0;"></div>
-            <el-checkbox-group @change="handleCheckedChange" v-model="product_data.productTags">
+            <el-checkbox-group @change="handleCheckedChange" v-model="checkOptions">
               <el-checkbox v-for="tag in productTags" :label="tag" :key="tag.id">{{tag.name}}
               </el-checkbox>
             </el-checkbox-group>
@@ -87,7 +88,7 @@
                                 name: 'productModify',
                                 params: {id: this.product_data.id}
                               }">
-        <el-button type="primary">
+        <el-button type="primary" @click="submitForm">
           修改信息<i class="el-icon-arrow-right el-icon--right"></i>
         </el-button>
       </router-link>
@@ -141,12 +142,14 @@
             .then(function (res) {
               this.$message.info('加载标签成功')
               this.productTags = res.body.data.content
+              this.initCheckOptions(this.product_data.productTags, this.productTags)
             })
         } else {
+          this.initCheckOptions(this.product_data.productTags, this.productTags)
         }
       },
       handleCheckAllChange (event) {
-        this.product_data.productTags = event.target.checked ? this.productTags : []
+        this.checkOptions = event.target.checked ? this.productTags : []
         this.isIndeterminate = false
       },
       handleCheckedChange (value) {
@@ -155,11 +158,42 @@
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.productTags.length
       },
       onClickedToAddTag () {
-        this.getProductTags()
         this.dialogFormVisible = true
+        this.getProductTags()
       },
       clickToAdd () {
+        console.log(this.checkOptions)
+        this.product_data.productTags = this.checkOptions
         console.log(this.product_data.productTags)
+        this.dialogFormVisible = false
+      },
+      initCheckOptions (tags, productTags) {
+        this.checkOptions = []
+        for (var i = 0; i < tags.length; i++) {
+          for (var j = 0; j < productTags.length; j++) {
+            if (productTags[j].id === tags[i].id) {
+              this.checkOptions.push(productTags[j])
+              continue
+            }
+          }
+        }
+      },
+      closeTag (tag) {
+        console.log(tag)
+        console.log(this.product_data.productTags.indexOf(tag))
+        this.product_data.productTags.splice(this.product_data.productTags.indexOf(tag), 1)
+      },
+      submitForm () {
+        this.$http.post('/api/products', this.product_data)
+          .then(function (response) {
+            if (response.body.success) {
+              this.$message.success('修改成功咯')
+              setTimeout(this.$router.push('/product'), 2000)
+            } else {
+              this.$message.error(response.body.message)
+              console.log(response.body)
+            }
+          })
       }
     }
   }

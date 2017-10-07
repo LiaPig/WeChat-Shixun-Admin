@@ -63,7 +63,7 @@
             <div style="display: inline-block;width: 200px;word-break:break-all;">
               <img :src="item.url" style="width: auto; height: 150px;"/>
             </div>
-            <el-input ::disabled="true" v-model="item.url" slot="reference"></el-input>
+            <el-input :disabled="true" v-model="item.url" slot="reference"></el-input>
           </el-popover>
         </el-form-item>
       </div>
