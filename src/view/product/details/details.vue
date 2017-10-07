@@ -55,18 +55,19 @@
           此商品无图片
         </div>
       </el-form-item>
-      <el-form-item :label="'图片' + (index + 1)" class="item" v-for="(item, index) in product_data.productImages"
-                    v-if="product_data.productImages.length > 0">
-        <el-popover
-          placement="top-start"
-          width="200"
-          trigger="hover">
-          <div style="display: inline-block;width: 200px;word-break:break-all;">
-            <img :src="item.url" style="width: auto; height: 150px;"/>
-          </div>
-          <el-input :disabled="true" v-model="item.url" slot="reference"></el-input>
-        </el-popover>
-      </el-form-item>
+      <div v-for="(item, index) in product_data.productImages" v-if="product_data.productImages.length > 0">
+        <el-form-item :label="'图片' + (index + 1)" class="item">
+          <el-popover
+            placement="top-start"
+            width="200"
+            trigger="hover">
+            <div style="display: inline-block;width: 200px;word-break:break-all;">
+              <img :src="item.url" style="width: auto; height: 150px;"/>
+            </div>
+            <el-input :disabled="true" v-model="item.url" slot="reference"></el-input>
+          </el-popover>
+        </el-form-item>
+      </div>
       <!--图片结束-->
 
     </el-form>
@@ -80,7 +81,7 @@
                                 params: {id: this.product_data.id}
                               }">
         <el-button type="primary">
-        修改信息<i class="el-icon-arrow-right el-icon--right"></i>
+          修改信息<i class="el-icon-arrow-right el-icon--right"></i>
         </el-button>
       </router-link>
     </el-button-group>
@@ -101,7 +102,10 @@
     data () {
       return {
         route_id: this.$route.params.id,
-        product_data: {}
+        product_data: {
+          productImages: [],
+          productTags: []
+        }
       }
     },
     methods: {

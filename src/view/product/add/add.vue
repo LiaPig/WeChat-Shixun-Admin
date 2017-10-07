@@ -91,11 +91,6 @@
         checkOptions: [],
         isIndeterminate: true,
         dialogFormVisible: false,
-        form: {
-          name: '',
-          region: '',
-        },
-        formLabelWidth: '120px;',
         resourceUrl: '',
         fileList: [],
         fileInfo: {
