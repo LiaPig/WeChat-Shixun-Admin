@@ -8,31 +8,31 @@
              element-loading-text="拼命加载中">
       <!--用户名开始-->
       <el-form-item label="用户名" class="item">
-        <el-input v-model="user_data.username"></el-input>
+        <el-input v-model="user_data.username" :disabled="true"></el-input>
       </el-form-item>
       <!--用户名结束-->
 
       <!--id开始-->
       <el-form-item label="id" class="item">
-        <el-input v-model="user_data.id"></el-input>
+        <el-input v-model="user_data.id" :disabled="true"></el-input>
       </el-form-item>
       <!--id结束-->
 
       <!--性别开始-->
       <el-form-item label="性别 " class="item">
-        <el-input v-model="user_data.gender"></el-input>
+        <el-input v-model="user_data.gender" :disabled="true"></el-input>
       </el-form-item>
       <!--性别结束-->
 
       <!--电话号码开始-->
       <el-form-item label="电话号码 " class="item">
-        <el-input v-model="user_data.mobilePhone"></el-input>
+        <el-input v-model="user_data.mobilePhone" :disabled="true"></el-input>
       </el-form-item>
       <!--电话号码结束-->
 
       <!--邮箱地址开始-->
       <el-form-item label="邮箱地址 " class="item">
-        <el-input v-model="user_data.email"></el-input>
+        <el-input v-model="user_data.email" :disabled="true"></el-input>
       </el-form-item>
       <!--邮箱地址结束-->
 
@@ -68,7 +68,7 @@
 
       <!--状态开始-->
       <el-form-item label="状态" class="item">
-        <el-input v-model="user_data.status"></el-input>
+        <el-input v-model="user_data.status" :disabled="true"></el-input>
       </el-form-item>
       <!--状态结束-->
 

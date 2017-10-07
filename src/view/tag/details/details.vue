@@ -5,25 +5,41 @@
     <el-form label-position="right" label-width="80px" :model="tag_data">
       <!--id开始-->
       <el-form-item label="id" class="item">
-        <el-input v-model="tag_data.id"></el-input>
+        <el-input v-model="tag_data.id" :disabled="true"></el-input>
       </el-form-item>
       <!--id结束-->
 
       <!--标签名称开始-->
       <el-form-item label="标签名称" class="item">
-        <el-input v-model="tag_data.name"></el-input>
+        <el-input v-model="tag_data.name" :disabled="true"></el-input>
       </el-form-item>
       <!--标签名称结束-->
 
       <!--类型开始-->
       <el-form-item label="类型" class="item">
-        <el-input v-model="tag_data.type"></el-input>
+        <el-input v-model="tag_data.type" :disabled="true"></el-input>
       </el-form-item>
       <!--类型结束-->
 
+      <!--选项开始-->
+      <el-form-item label="商品选项" class="item">
+        <el-tag v-if="tag_data.tagOptions.length > 0"
+                v-for="option in tag_data.tagOptions"
+                :key="option.id"
+                type="success"
+                :closable="false"
+                style="margin-right: 2px;">
+          {{option.optionName}}
+        </el-tag>
+        <div class="content" v-if="tag_data.tagOptions.length == 0">
+          此标签无选项
+        </div>
+      </el-form-item>
+      <!--选项结束-->
+
       <!--状态开始-->
       <el-form-item label="状态" class="item">
-        <el-input v-model="tag_data.status"></el-input>
+        <el-input v-model="tag_data.status" :disabled="true"></el-input>
       </el-form-item>
       <!--状态结束-->
 

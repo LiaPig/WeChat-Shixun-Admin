@@ -34,13 +34,12 @@
 
       <!--标签开始-->
       <el-form-item label="商品标签" prop="productTags" class="item">
-        <el-tag
-          v-if="product_data.productTags.length > 0"
-          v-for="tag in product_data.productTags"
-          :key="tag.id"
-          type="success"
-          :closable="false"
-        >
+        <el-tag v-if="product_data.productTags.length > 0"
+                v-for="tag in product_data.productTags"
+                :key="tag.id"
+                type="success"
+                :closable="false"
+                style="margin-right: 2px;">
           {{tag.name}}
         </el-tag>
         <div class="content" v-if="product_data.productTags.length == 0">
@@ -64,7 +63,7 @@
             <div style="display: inline-block;width: 200px;word-break:break-all;">
               <img :src="item.url" style="width: auto; height: 150px;"/>
             </div>
-            <el-input :disabled="true" v-model="item.url" slot="reference"></el-input>
+            <el-input ::disabled="true" v-model="item.url" slot="reference"></el-input>
           </el-popover>
         </el-form-item>
       </div>

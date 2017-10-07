@@ -15,13 +15,13 @@
 
       <!--id开始-->
       <el-form-item label="id" prop="id" class="item">
-        <el-input v-model="form.id" disabled="true"></el-input>
+        <el-input v-model="form.id" :disabled="true"></el-input>
       </el-form-item>
       <!--id结束-->
 
       <!--url开始-->
       <el-form-item label="url" prop="url" class="item">
-        <el-input  type="textarea" autosize v-model="form.url" disabled="true"></el-input>
+        <el-input  type="textarea" autosize v-model="form.url" :disabled="true"></el-input>
       </el-form-item>
       <!--用户名结束-->
 
