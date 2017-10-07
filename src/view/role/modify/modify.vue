@@ -78,7 +78,7 @@
       get_role_data: function (id) {
         const that = this
         that.load_data = true
-        that.$http.get('/api/roles/' + id )
+        that.$http.get('/api/roles/' + id)
           .then((response) => {
             that.form = response.body.data
             that.load_data = false
@@ -92,14 +92,15 @@
       on_submit_form: function () {
         const that = this
         that.on_submit_loading = true
-        that.$http.post('/api/images/', that.form)
+        that.$http.post('/api/roles/', that.form)
           .then((response) => {
             if (response.body.success) {
               that.$message.success('修改成功！')
               that.on_submit_loading = false
-              setTimeout(this.$router.push('/role'), 2000)
-            }
-            else {
+              setTimeout(() =>
+                this.$router.push('/role')
+              , 2000)
+            } else {
               that.$message.error(response.body.message)
               console.log(response.body)
               that.on_submit_loading = false
