@@ -11,7 +11,10 @@ import Picture from 'View/picture/picture.vue'
 import PictureDetails from 'View/picture/details/details.vue'
 import PictureAdd from 'View/picture/add/add.vue'
 import PictureModify from 'View/picture/modify/modify.vue'
-
+import Order from 'View/order/order.vue'
+import OrderDetails from 'View/order/details/details.vue'
+import OrderAdd from 'View/order/add/add.vue'
+import OrderModify from 'View/order/modify/modify.vue'
 import Tag from 'View/tag/tag.vue'
 import TagDetails from 'View/tag/details/details.vue'
 import TagAdd from 'View/tag/add/add.vue'
@@ -113,6 +116,39 @@ const routes = [
         },
         component: PictureModify
       },
+      // 订单页面
+      {
+        path: '/order',
+        name: 'order',
+        component: Order,
+        meta: {
+          name: '订单管理'
+        }
+      },
+      {
+        path: '/order/details',
+        name: 'orderDetails',
+        meta: {
+          name: '订单详情页面'
+        },
+        component: OrderDetails
+      },
+      {
+        path: '/order/add',
+        name: 'orderAdd',
+        meta: {
+          name: '新增订单页面'
+        },
+        component: OrderAdd
+      },
+      {
+        path: '/order/modify',
+        name: 'orderModify',
+        meta: {
+          name: '修改订单信息页面'
+        },
+        component: OrderModify
+      },
       // 标签页面
       {
         path: '/tag',
@@ -185,7 +221,7 @@ const routes = [
         name: 'role',
         component: Role,
         meta: {
-          name: '用户管理'
+          name: '角色管理'
         }
       },
       {
