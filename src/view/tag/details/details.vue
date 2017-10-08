@@ -17,12 +17,20 @@
 
       <!--类型开始-->
       <el-form-item label="类型" class="item">
-        <el-input v-model="tag_data.type" :disabled="true"></el-input>
+        <!--<el-input v-model="tag_data.type" :disabled="true"></el-input>-->
+        <el-select v-model="tag_data.type" :disabled="true">
+          <el-option
+            v-for="item in tagTypes"
+            :key="item.value"
+            :label="item.name"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <!--类型结束-->
 
       <!--选项开始-->
-      <el-form-item label="商品选项" class="item">
+      <el-form-item label="商品选项" class="item" v-if="tag_data.type != 'productCategory'">
         <el-tag v-if="tag_data.tagOptions.length > 0"
                 v-for="option in tag_data.tagOptions"
                 :key="option.id"
@@ -39,7 +47,15 @@
 
       <!--状态开始-->
       <el-form-item label="状态" class="item">
-        <el-input v-model="tag_data.status" :disabled="true"></el-input>
+        <!--<el-input v-model="tag_data.status" :disabled="true"></el-input>-->
+        <el-select v-model="tag_data.status" :disabled="true">
+          <el-option
+            v-for="item in status"
+            :key="item.value"
+            :label="item.name"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <!--状态结束-->
 
@@ -64,17 +80,24 @@
 
 <script>
   import ElButtonGroup from '../../../../node_modules/element-ui/packages/button/src/button-group'
+
   export default {
     components: {ElButtonGroup},
     created () {
       const that = this
       this.route_id = this.$route.params.id
+      that.initTagTypes()
+      that.initStatus()
       that.get_tag_data(that.route_id)
     },
     data () {
       return {
         route_id: this.$route.params.id,
-        tag_data: {}
+        tag_data: {
+          tagOptions: []
+        },
+        tagTypes: [],
+        status: []
       }
     },
     methods: {
@@ -82,13 +105,65 @@
       get_tag_data: function (id) {
         const that = this
         that.load_data = true
-        that.$http.get('/api/tags/' + id )
+        that.$http.get('/api/tags/' + id)
           .then((response) => {
             that.tag_data = response.body.data
             that.load_data = false
           })
           .catch(function (error) {
             console.error(error)
+            that.load_data = false
+          })
+      },
+      initTagTypes () {
+        const that = this
+        that.load_data = true
+        that.$http.get('/api/tags/types')
+          .then((res) => {
+            if (res.body.success) {
+              const data = res.body.data
+              for (var a in data) {
+                that.tagTypes.push({
+                  name: a,
+                  value: data[a]
+                })
+              }
+              that.$message.success('加载成功')
+              that.load_data = false
+              console.log(that.tagTypes)
+            } else {
+              console.log(res)
+              this.$message.error('载失败!')
+            }
+          })
+          .catch((res) => {
+            that.$message.error(res)
+            that.load_data = false
+          })
+      },
+      initStatus () {
+        const that = this
+        that.load_data = true
+        that.$http.get('/api/meta/status')
+          .then((res) => {
+            if (res.body.success) {
+              const data = res.body.data
+              for (var a in data) {
+                that.status.push({
+                  name: a,
+                  value: data[a]
+                })
+              }
+              that.$message.success('加载成功')
+              that.load_data = false
+              console.log(that.status)
+            } else {
+              console.log(res)
+              this.$message.error('加载失败!')
+            }
+          })
+          .catch((res) => {
+            that.$message.error(res)
             that.load_data = false
           })
       }
@@ -104,6 +179,7 @@
     width: 40%;
     padding-right: 40%;
   }
+
   .group {
     display: inline-block;
     width: 67%;
