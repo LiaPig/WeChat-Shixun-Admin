@@ -100,8 +100,7 @@
               that.$message.success('修改成功！')
               that.on_submit_loading = false
               setTimeout(this.$router.push('/picture'), 2000)
-            }
-            else {
+            } else {
               that.$message.error(response.body.message)
               console.log(response.body)
               that.on_submit_loading = false

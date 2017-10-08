@@ -56,23 +56,23 @@
         <el-table-column
           sortable
           label="处理人姓名"
-          prop="processor"
+          prop="processor.username"
           width="150px">
         </el-table-column>
         <!--处理人姓名结束-->
 
-        <!--图片状态开始-->
+        <!--订单状态开始-->
         <el-table-column
-          label="图片状态">
+          label="订单状态">
           <template scope="props">
-            <div v-if="props.row.status == 1"> 已关闭 </div>
-            <div v-if="props.row.status == 10"> 待支付 </div>
-            <div v-if="props.row.status == 20"> 待确认 </div>
-            <div v-if="props.row.status == 30"> 正在处理 </div>
-            <div v-if="props.row.status == 40"> 已完成 </div>
+            <div v-if="props.row.state == 1" style="color: red;"> 已关闭 </div>
+            <div v-if="props.row.state == 10"> 待支付 </div>
+            <div v-if="props.row.state == 20"> 待确认 </div>
+            <div v-if="props.row.state == 30"> 正在处理 </div>
+            <div v-if="props.row.state == 40"> 已完成 </div>
           </template>
         </el-table-column>
-        <!--图片状态结束-->
+        <!--订单状态结束-->
 
         <!--操作按钮组开始-->
         <el-table-column
@@ -174,8 +174,7 @@
                 that.$message.success('删除成功！')
                 that.on_submit_loading = false
                 setTimeout(that.on_refresh(), 2000)
-              }
-              else {
+              } else {
                 that.$message.error(response.body.message)
                 console.log(response.body)
                 that.on_submit_loading = false
