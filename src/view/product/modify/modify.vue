@@ -1,7 +1,7 @@
 <template>
   <div class="detail_panel">
     <!--表单开始-->
-    <el-form label-position="right" label-width="80px" :model="product_data">
+    <el-form label-position="right" label-width="80px" :model="product_data" :rules="product_rules">
       <!--id开始-->
       <el-form-item label="id" class="item">
         <el-input :disabled="true" :value="product_data.id"></el-input>
@@ -9,19 +9,19 @@
       <!--id结束-->
 
       <!--名称开始-->
-      <el-form-item label="名称" class="item">
+      <el-form-item label="名称" class="item" prop="name">
         <el-input v-model="product_data.name"></el-input>
       </el-form-item>
       <!--名称结束-->
 
       <!--状态开始-->
-      <el-form-item label="状态" class="item">
+      <el-form-item label="状态" class="item" prop="status">
         <el-input v-model="product_data.status"></el-input>
       </el-form-item>
       <!--状态结束-->
 
       <!--底价开始-->
-      <el-form-item label="底价" class="item">
+      <el-form-item label="底价" class="item" prop="basePrice">
         <el-input v-model="product_data.basePrice"></el-input>
       </el-form-item>
       <!--底价结束-->
@@ -78,6 +78,9 @@
       </div>
       <!--图片结束-->
 
+      <el-form-item class="item">
+        <el-button @click="addImage">新增图片</el-button>
+      </el-form-item>
     </el-form>
     <!--表单结束-->
 
@@ -117,6 +120,23 @@
         productTags: [],
         product_data: {
           productTags: []
+        },
+        product_rules: {
+          name: [
+            {required: true, message: '请输入商品名称', trigger: 'blur'}
+          ],
+          status: [
+            {required: true, message: '请输入商品状态', trigger: 'blur'}
+          ],
+          basePrice: [
+            {required: true, message: '请输入商品底价', trigger: 'blur'},
+            {max: 4, message: '不超过一万元', trigger: 'blur'},
+            {
+              pattern: /^\d+(?:\.\d+)?$/,
+              message: '只能由数字组成'
+            }
+          ],
+          description: []
         }
       }
     },
@@ -194,6 +214,12 @@
               console.log(response.body)
             }
           })
+      },
+      addImage () {
+        this.product_data.productImages.push({
+          value: '',
+          key: Date.now()
+        })
       }
     }
   }
