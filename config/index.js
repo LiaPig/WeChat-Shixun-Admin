@@ -32,7 +32,14 @@ module.exports = {
         target: 'https://api.leewaiho.com',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': '/api'
+          '^/api': '/api',
+        }
+      },
+      '/oauth': {
+        target: 'https://api.leewaiho.com',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/oauth': '/oauth'
         }
       }
     },

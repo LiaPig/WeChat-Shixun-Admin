@@ -8,7 +8,10 @@
     <!--图片和标题结束-->
 
     <!--登陆表单开始-->
-    <div class="loginForm_item" @keyup.enter="submitForm('form')">
+    <div class="loginForm_item"
+         v-loading="load_data"
+         element-loading-text="正在登陆中..."
+         @keyup.enter="submitForm('form')">
       <el-form ref="form" :model="form" :rules="rules">
         <!--用户名开始-->
         <el-form-item prop="username">
@@ -46,88 +49,54 @@
         rules: {
           username: [{required: true, message: '用户名不能为空', trigger: 'blur'}],
           password: [{required: true, message: '密码不能为空！', trigger: 'blur'}]
-        }
+        },
+        load_data: false
       }
     },
     methods: {
       // 提交
       submitForm (formName) {
-        this.$refs[formName].validate((valid) => {
+        const that = this
+        // 表单验证
+        that.$refs[formName].validate((valid) => {
           if (!valid) {
             return false
           }
-          this.$notify({
-            title: '登录成功',
-            message: '欢迎你, 臭猪杂',
-            type: 'success'
-          })
+          that.load_data = true
+          // 向后台发送数据 验证
+          that.$http.post('/api/login', that.form)
+            .then((response) => {
+              if (response.body.success) {
+                // 设置token
+                console.log(1)
+                const tokenInfo = response.body.data
+                this.$notify({
+                  title: '登录成功',
+                  message: '欢迎你, 臭猪杂',
+                  type: 'success'
+                })
+                // 跳转到首页
+//                setTimeout(function () {
+//                  this.$router.push('/picture')
+//                }, 1000)
+              } else {
+                that.load_data = false
+                this.$notify.error({
+                  title: '登录失败',
+                  message: '请检查您的账号密码是否正确'
+                })
+              }
+            })
+            // 登录失败
+            .catch((response) => {
+              that.$message.error(response.statusText)
+              that.load_data = false
+            })
         })
       }
     }
   }
 </script>
-<!--<script type="text/javascript">
-  import {mapActions} from 'vuex'
-  import {port_user, port_code} from 'common/port_uri'
-  import {SET_TOKEN_INFO, SET_USER_INFO} from 'store/actions/type'
-
-  export default {
-    methods: {
-      ...mapActions({
-        set_token_info: SET_TOKEN_INFO,
-        set_user_info: SET_USER_INFO,
-      }),
-      //提交
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (!valid) return false;
-          this.load_data = true;
-          //登录提交
-          this.$fetch.api_user.login(this.form)
-            .then(({data}) => {
-              if (data['access_token']) {
-                this.set_token_info(data);
-                this.$fetch.api_user.me()
-                  .then(({data}) => {
-                    this.set_user_info(data)
-                      .then(
-                        () => {
-                          this.$notify({
-                            title: '登录成功',
-                            message: '欢迎你, ' + data.realname,
-                            type: 'success'
-                          });
-                          setTimeout(this.$router.push({path: '/'}), 500)
-                        },
-                        () => {
-                          this.load_data = false;
-                          this.set_token_info(null);
-                          this.$notify.error({
-                            title: '错误',
-                            message: data.realname + ',你无权访问后台哦'
-                          });
-                        })
-                  })
-
-              }
-            })
-            .catch(({code, data}) => {
-              this.load_data = false;
-              if (code === port_code.unauthorized || code === port_code.invalid_grant) {
-                this.$notify.error({
-                  title: '登录失败',
-                  message: '请检查您的账号密码是否正确'
-                });
-              }
-            });
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
-    }
-  }
-</script>-->
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .loginForm{

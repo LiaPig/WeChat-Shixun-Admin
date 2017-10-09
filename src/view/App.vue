@@ -89,6 +89,7 @@
 
   .right .product_panel .panel_body {
     position: fixed;
+    left: 200px;
     top: 100px;
     height: 500px;
     width: calc(100% - 200px - 5px);
