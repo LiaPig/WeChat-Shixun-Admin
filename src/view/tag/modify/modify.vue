@@ -31,22 +31,62 @@
 
       <!--选项开始-->
       <el-form-item label="标签选项" class="item" v-if="tag_data.type != 'productCategory'">
-        <el-tag v-if="tag_data.tagOptions.length > 0"
-                v-for="option in tag_data.tagOptions"
-                :key="option.id"
-                type="primary"
-                :closable="true"
-                @click="console.log(option)"
-                @close="handleCloseTag(option)"
-                style="margin-right: 2px;">
-          {{option.optionName}}
-        </el-tag>
+        <!--<el-button-group v-if="tag_data.tagOptions.length > 0"-->
+                <!--v-for="(item, index) in tag_data.tagOptions"-->
+                <!--type="primary"-->
+                <!--style="margin-right: 2px;">-->
+        <span class="wrapper"
+              v-for="(item, index) in tag_data.tagOptions"
+              style="margin-right: 3px;"
+        >
+          <el-button size="small" type="info" @click="showEditForm(index)">{{item.optionName}}</el-button>
+        </span>
+        <div class="modal">
+          <el-dialog title="编辑标签选项" :visible.sync="editOptionFormVisible" :modalAppendToBody="false">
+            <el-form
+              :model="tagOption"
+              ref="tagOption"
+            >
+              <el-form-item
+                prop="optionName"
+                label="选项名称:"
+              >
+                <el-input size="small" v-model="tagOption.optionName" placeholder="请输入内容"></el-input>
+              </el-form-item>
+              <el-form-item
+                prop="value"
+                label="选 项 值:"
+              >
+                <el-input size="small" v-model="tagOption.value" placeholder="请输入内容"></el-input>
+              </el-form-item>
+              <el-form-item
+                prop="type"
+                label="选项类型:"
+              >
+                <el-select v-model="tagOption.type" size="small">
+                  <el-option
+                    v-for="item in tagOptionTypes"
+                    :key="item.value"
+                    :label="item.name"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button type="danger" @click="handleDeleteTag">删除</el-button>
+              <el-button @click="editOptionFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="handleEditTag">确 定</el-button>
+            </div>
+          </el-dialog>
+        </div>
+        <!--</el-button-group>-->
         <div class="content" v-if="tag_data.tagOptions.length == 0">
           此标签无选项
         </div>
-        <el-button type="success" size="small" @click="showForm">添加标签</el-button>
+        <el-button type="success" size="small" @click="showAddForm">添加标签</el-button>
         <div class="modal">
-          <el-dialog title="新增标签选项" :visible.sync="dialogFormVisible" :modalAppendToBody="false">
+          <el-dialog title="新增标签选项" :visible.sync="addOptionFormVisible" :modalAppendToBody="false">
             <el-form
               :model="tagOption"
               ref="tagOption"
@@ -78,7 +118,7 @@
               </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
+              <el-button @click="addOptionFormVisible = false">取 消</el-button>
               <el-button type="primary" @click="handleAddTag">确 定</el-button>
             </div>
           </el-dialog>
@@ -141,7 +181,8 @@
         tagTypes: [],
         tagOptionTypes: [],
         status: [],
-        dialogFormVisible: false,
+        addOptionFormVisible: false,
+        editOptionFormVisible: false,
         tagOption: {
           optionName: '',
           value: '',
@@ -257,10 +298,6 @@
             that.load_data = false
           })
       },
-      handleCloseTag (tag) {
-        this.tag_data.tagOptions.splice(this.tag_data.tagOptions.indexOf(tag), 1)
-        console.log(this.tag_data.tagOptions)
-      },
       handleAddTag () {
         const form = {
           optionName: this.tagOption.optionName,
@@ -268,17 +305,39 @@
           value: this.tagOption.value
         }
         this.tag_data.tagOptions.push(form)
-        this.dialogFormVisible = false
+        this.addOptionFormVisible = false
       },
-      showForm () {
-        this.resetTagOption()
-        this.dialogFormVisible = true
+      handleEditTag () {
+        const form = {
+          optionName: this.tagOption.optionName,
+          type: this.tagOption.type,
+          value: this.tagOption.value
+        }
+        let idx = this.tagOption.index
+        this.tag_data.tagOptions[idx] = form
+        this.editOptionFormVisible = false
+      },
+      handleDeleteTag () {
+        let idx = this.tagOption.index
+        this.tag_data.tagOptions.splice(idx, 1)
+        this.editOptionFormVisible = false
+//        this.tag_data.tagOptions.splice(index, 1)
+      },
+      showAddForm () {
+        this.setTagOption({})
+        this.addOptionFormVisible = true
         console.log(this.tag_data)
       },
-      resetTagOption () {
-        this.tagOption.optionName = ''
-        this.tagOption.type = ''
-        this.tagOption.value = ''
+      showEditForm (index) {
+        this.setTagOption(this.tag_data.tagOptions[index])
+        this.tagOption.index = index
+        this.editOptionFormVisible = true
+      },
+      setTagOption (obj) {
+        this.tagOption.optionName = obj.optionName
+        this.tagOption.type = obj.type
+        this.tagOption.value = obj.value
+        this.tagOption.index = ''
       }
     }
   }
