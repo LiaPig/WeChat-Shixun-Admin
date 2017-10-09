@@ -68,8 +68,8 @@
             .then((response) => {
               if (response.body.success) {
                 // 设置token
-                console.log(1)
                 const tokenInfo = response.body.data
+                console.log(tokenInfo)
                 this.$notify({
                   title: '登录成功',
                   message: '欢迎你, 臭猪杂',
