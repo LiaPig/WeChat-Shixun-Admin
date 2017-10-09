@@ -43,7 +43,7 @@
         <div class="content" v-if="tag_data.tagOptions.length == 0">
           此标签无选项
         </div>
-        <el-button type="success" size="small" @click="dialogFormVisible = true">添加标签</el-button>
+        <el-button type="success" size="small" @click="showForm">添加标签</el-button>
         <div class="modal">
           <el-dialog title="新增标签选项" :visible.sync="dialogFormVisible" :modalAppendToBody="false">
             <el-form
@@ -74,16 +74,6 @@
                     :value="item.value">
                   </el-option>
                 </el-select>
-              </el-form-item>
-
-              <el-form-item
-                prop="defaultOption"
-                label="默认选项:"
-              >
-                <el-radio-group v-model="tagOption.defaultOption">
-                  <el-radio :label="true">是</el-radio>
-                  <el-radio :label="false" checked>否</el-radio>
-                </el-radio-group>
               </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -154,8 +144,7 @@
         tagOption: {
           optionName: '',
           value: '',
-          type: '',
-          defaultOption: false
+          type: ''
         }
       }
     },
@@ -227,10 +216,16 @@
           })
       },
       submitForm () {
-        if (this.tag_data.type === 'productCategory') {
-          this.tag_data.tagOptions = []
-        }
-        console.log(this.tag_data)
+        this.$http.post('/api/tags', this.tag_data)
+          .then(function (response) {
+            if (response.body.success) {
+              this.$message.success('修改成功咯')
+              setTimeout(this.$router.push('/tag'), 2000)
+            } else {
+              this.$message.error(response.body.message)
+              console.log(response.body)
+            }
+          })
       },
       clickToAdd () {
         console.log(this.tagOption)
@@ -267,9 +262,23 @@
         console.log(this.tag_data.tagOptions)
       },
       handleAddTag () {
-        this.tag_data.tagOptions.push(this.tagOption)
-        console.log(this.tag_data.tagOptions)
+        const form = {
+          optionName: this.tagOption.optionName,
+          type: this.tagOption.type,
+          value: this.tagOption.value
+        }
+        this.tag_data.tagOptions.push(form)
         this.dialogFormVisible = false
+      },
+      showForm () {
+        this.resetTagOption()
+        this.dialogFormVisible = true
+        console.log(this.tag_data)
+      },
+      resetTagOption () {
+        this.tagOption.optionName = ''
+        this.tagOption.type = ''
+        this.tagOption.value = ''
       }
     }
   }

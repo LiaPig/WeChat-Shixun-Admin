@@ -34,7 +34,7 @@
         <el-tag v-if="tag_data.tagOptions.length > 0"
                 v-for="option in tag_data.tagOptions"
                 :key="option.id"
-                type="success"
+                type="primary"
                 :closable="false"
                 style="margin-right: 2px;">
           {{option.optionName}}
