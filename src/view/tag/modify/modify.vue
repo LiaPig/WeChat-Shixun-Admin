@@ -36,6 +36,7 @@
                 :key="option.id"
                 type="primary"
                 :closable="true"
+                @click="console.log(option)"
                 @close="handleCloseTag(option)"
                 style="margin-right: 2px;">
           {{option.optionName}}
@@ -216,6 +217,9 @@
           })
       },
       submitForm () {
+        if (this.tag_data.type === 'productCategory') {
+          this.tag_data.tagOptions = []
+        }
         this.$http.post('/api/tags', this.tag_data)
           .then(function (response) {
             if (response.body.success) {
@@ -226,10 +230,6 @@
               console.log(response.body)
             }
           })
-      },
-      clickToAdd () {
-        console.log(this.tagOption)
-        this.$message.success('假装提交了')
       },
       initTagOptionTypes () {
         const that = this
