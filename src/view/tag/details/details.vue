@@ -130,10 +130,9 @@
               }
               that.$message.success('加载成功')
               that.load_data = false
-              console.log(that.tagTypes)
             } else {
-              console.log(res)
-              this.$message.error('载失败!')
+              that.$message.error('加载失败!')
+              that.load_data = false
             }
           })
           .catch((res) => {
@@ -156,10 +155,9 @@
               }
               that.$message.success('加载成功')
               that.load_data = false
-              console.log(that.status)
             } else {
-              console.log(res)
-              this.$message.error('加载失败!')
+              that.$message.error('加载失败!')
+              that.load_data = false
             }
           })
           .catch((res) => {

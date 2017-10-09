@@ -37,7 +37,7 @@
 
         <!--类型开始-->
         <el-table-column
-          label="类型">
+          label="标签类型">
           <template scope="props">
             <div v-if="props.row.type === 'product'">商品</div>
             <div v-if="props.row.type === 'productCategory'">商品分类</div>
@@ -146,8 +146,7 @@
                 that.$message.success('删除成功！')
                 that.on_submit_loading = false
                 setTimeout(that.on_refresh(), 2000)
-              }
-              else {
+              } else {
                 that.$message.error(response.body.message)
                 console.log(response.body)
                 that.on_submit_loading = false
