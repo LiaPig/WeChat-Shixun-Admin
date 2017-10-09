@@ -2,7 +2,7 @@
   <div class="detail_panel">
 
     <!--表单开始-->
-    <el-form label-position="right" label-width="80px" :model="tag_data">
+    <el-form label-position="right" label-width="120px" :model="tag_data">
       <!--id开始-->
       <el-form-item label="id" class="item">
         <el-input v-model="tag_data.id" :disabled="true"></el-input>
@@ -30,17 +30,67 @@
       <!--类型结束-->
 
       <!--选项开始-->
-      <el-form-item label="商品选项" class="item" v-if="tag_data.type != 'productCategory'">
+      <el-form-item label="标签选项" class="item" v-if="tag_data.type != 'productCategory'">
         <el-tag v-if="tag_data.tagOptions.length > 0"
                 v-for="option in tag_data.tagOptions"
                 :key="option.id"
-                type="success"
-                :closable="false"
+                type="primary"
+                :closable="true"
+                @close="handleCloseTag(option)"
                 style="margin-right: 2px;">
           {{option.optionName}}
         </el-tag>
         <div class="content" v-if="tag_data.tagOptions.length == 0">
           此标签无选项
+        </div>
+        <el-button type="success" size="small" @click="dialogFormVisible = true">添加标签</el-button>
+        <div class="modal">
+          <el-dialog title="新增标签选项" :visible.sync="dialogFormVisible" :modalAppendToBody="false">
+            <el-form
+              :model="tagOption"
+              ref="tagOption"
+            >
+              <el-form-item
+                prop="optionName"
+                label="选项名称:"
+              >
+                <el-input size="small" v-model="tagOption.optionName" placeholder="请输入内容"></el-input>
+              </el-form-item>
+              <el-form-item
+                prop="value"
+                label="选 项 值:"
+              >
+                <el-input size="small" v-model="tagOption.value" placeholder="请输入内容"></el-input>
+              </el-form-item>
+              <el-form-item
+                prop="type"
+                label="选项类型:"
+              >
+                <el-select v-model="tagOption.type" class="el-input--small">
+                  <el-option
+                    v-for="item in tagOptionTypes"
+                    :key="item.value"
+                    :label="item.name"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+
+              <el-form-item
+                prop="defaultOption"
+                label="默认选项:"
+              >
+                <el-radio-group v-model="tagOption.defaultOption">
+                  <el-radio :label="true">是</el-radio>
+                  <el-radio :label="false" checked>否</el-radio>
+                </el-radio-group>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="handleAddTag">确 定</el-button>
+            </div>
+          </el-dialog>
         </div>
       </el-form-item>
       <!--选项结束-->
@@ -88,6 +138,7 @@
       this.route_id = this.$route.params.id
       that.initTagTypes()
       that.initStatus()
+      that.initTagOptionTypes()
       that.get_tag_data(that.route_id)
     },
     data () {
@@ -97,7 +148,15 @@
           tagOptions: []
         },
         tagTypes: [],
-        status: []
+        tagOptionTypes: [],
+        status: [],
+        dialogFormVisible: false,
+        tagOption: {
+          optionName: '',
+          value: '',
+          type: '',
+          defaultOption: false
+        }
       }
     },
     methods: {
@@ -172,6 +231,45 @@
           this.tag_data.tagOptions = []
         }
         console.log(this.tag_data)
+      },
+      clickToAdd () {
+        console.log(this.tagOption)
+        this.$message.success('假装提交了')
+      },
+      initTagOptionTypes () {
+        const that = this
+        that.load_data = true
+        that.$http.get('/api/meta/tagOptionTypes')
+          .then((res) => {
+            if (res.body.success) {
+              const data = res.body.data
+              for (var a in data) {
+                that.tagOptionTypes.push({
+                  name: a,
+                  value: data[a]
+                })
+              }
+              that.$message.success('加载成功')
+              that.load_data = false
+              console.log(that.tagOptionTypes)
+            } else {
+              console.log(res)
+              this.$message.error('加载失败!')
+            }
+          })
+          .catch((res) => {
+            that.$message.error(res)
+            that.load_data = false
+          })
+      },
+      handleCloseTag (tag) {
+        this.tag_data.tagOptions.splice(this.tag_data.tagOptions.indexOf(tag), 1)
+        console.log(this.tag_data.tagOptions)
+      },
+      handleAddTag () {
+        this.tag_data.tagOptions.push(this.tagOption)
+        console.log(this.tag_data.tagOptions)
+        this.dialogFormVisible = false
       }
     }
   }
