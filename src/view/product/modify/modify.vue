@@ -47,7 +47,7 @@
         </el-tag>
         <el-button type="success" size="small" @click="onClickedToAddTag">添加标签</el-button>
         <div>
-          <el-dialog title="商品标签" :visible.sync="dialogFormVisible">
+          <el-dialog title="商品标签" :visible.sync="dialogFormVisible" :modalAppendToBody="false">
             <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选
             </el-checkbox>
             <div style="margin: 15px 0;"></div>
