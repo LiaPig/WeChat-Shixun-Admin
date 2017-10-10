@@ -40,5 +40,9 @@ export default {
           reject(response)
         })
     })
+  },
+  LOGOUT ({commit}) {
+    commit('SET_TOKEN', null)
+    commit('SET_USER_INFO', null)
   }
 }
