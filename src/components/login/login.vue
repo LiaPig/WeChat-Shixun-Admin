@@ -39,7 +39,9 @@
 </template>
 
 <script>
-  export default{
+  import { mapActions } from 'vuex'
+
+  export default {
     data () {
       return {
         form: {
@@ -54,6 +56,9 @@
       }
     },
     methods: {
+      ...mapActions({
+        login: 'LOGIN'
+      }),
       // 提交
       submitForm (formName) {
         const that = this
@@ -64,34 +69,26 @@
           }
           that.load_data = true
           // 向后台发送数据 验证
-          that.$http.post('/api/login', that.form)
-            .then((response) => {
-              if (response.body.success) {
-                // 设置token
-                const tokenInfo = response.body.data
-                console.log(tokenInfo)
+          this.login(this.form)
+            .then(
+              (response) => {
+                this.load_data = false
                 this.$notify({
-                  title: '登录成功',
-                  message: '欢迎你, 臭猪杂',
+                  title: '成功',
+                  message: response.body.message,
                   type: 'success'
                 })
-                // 跳转到首页
-//                setTimeout(function () {
-//                  this.$router.push('/picture')
-//                }, 1000)
-              } else {
-                that.load_data = false
+                setTimeout(this.$router.push('/home'), 2000)
+              })
+            .catch(
+              (response) => {
+                this.load_data = false
                 this.$notify.error({
-                  title: '登录失败',
-                  message: '请检查您的账号密码是否正确'
+                  title: '失败',
+                  message: response.body.message
                 })
               }
-            })
-            // 登录失败
-            .catch((response) => {
-              that.$message.error(response.statusText)
-              that.load_data = false
-            })
+            )
         })
       }
     }
@@ -99,7 +96,7 @@
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .loginForm{
+  .loginForm {
     position: absolute;
     left: 0;
     top: 0;
@@ -109,18 +106,22 @@
     background-repeat: no-repeat;
     background-position: center;
   }
-  .logo{
+
+  .logo {
     padding-top: 50px;
   }
-  .logo img{
+
+  .logo img {
     height: 200px;
     width: 200px;
   }
-  .loginForm_item{
+
+  .loginForm_item {
     padding-top: 50px;
     width: 40%;
-    margin:0 auto;
+    margin: 0 auto;
   }
+
   .form-submit {
     width: 100%;
     color: #fff;

@@ -60,7 +60,7 @@ export default new class Cookie {
     if (expiresType === 'string' && expires !== '') {
       expires = new Date(expires)
     } else if (expiresType === 'number') {
-      expires = new Date(+new Date() + (1000 * expires)) // expires 以秒为单位 在当前时间 expires秒后过期
+      expires = new Date(+new Date() + (1000 * expires)) // expires 以秒为单位 在当前时间 expires秒后g
     }
     if (expires !== '' && 'toGMTString' in expires) {
       expires = ';expires=' + expires.toGMTString()
