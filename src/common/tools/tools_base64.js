@@ -9,7 +9,7 @@ import {base64Prefix} from 'Common/config'
 import base64 from 'js-base64'
 
 export default new class Base64 {
-  constructor() {
+  constructor () {
     this.prefix = base64Prefix
     this.base64 = base64.Base64
   }
