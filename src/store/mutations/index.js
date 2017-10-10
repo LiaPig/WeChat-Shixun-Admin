@@ -2,7 +2,7 @@
  * Created by MINT on 2017/9/29.
  */
 
-import { cookieStorage, sessionStorage } from 'Common/storage'
+import { cookieStorage } from 'Common/storage'
 
 export default {
   SET_TOKEN (state, token) {
@@ -17,9 +17,9 @@ export default {
   SET_USER_INFO (state, userInfo) {
     state.UserInfo = userInfo || {}
     if (userInfo === null) {
-      sessionStorage.remove('userInfo')
+      cookieStorage.remove('user_info')
     } else {
-      sessionStorage.set('userInfo', userInfo)
+      cookieStorage.set('user_info', userInfo)
     }
   }
 }
