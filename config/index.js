@@ -34,13 +34,6 @@ module.exports = {
         pathRewrite: {
           '^/api': '/api',
         }
-      },
-      '/oauth': {
-        target: 'https://api.leewaiho.com',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/oauth': '/oauth'
-        }
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
