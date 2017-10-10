@@ -51,7 +51,7 @@
           <span class="box-item">属性标签：
             <el-tag v-if="orderItem.tagOptions.length > 0"
                     v-for="tagOption in orderItem.tagOptions"
-                    :key="tagOption.id"
+                    :key="tagOption.optionName"
                     type="success"
                     :closable="false"
                     style="margin-right: 2px;">
@@ -100,6 +100,7 @@
           .then((response) => {
             that.order_data = response.body.data
             that.load_data = false
+            console.log(that.order_data)
           })
           .catch(function (error) {
             console.error(error)
