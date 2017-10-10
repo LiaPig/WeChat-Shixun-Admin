@@ -3,9 +3,6 @@
     <!--顶部的 刷新 以及 新增订单 按钮组开始-->
     <el-button-group class="group">
       <el-button @click.stop="on_refresh" size="small" type="primary" icon="loading">刷新</el-button>
-      <router-link :to="{name: 'orderAdd'}" order="span">
-        <el-button type="primary" size="small" icon="plus">新增订单</el-button>
-      </router-link>
     </el-button-group>
     <!--顶部的 刷新 以及 新增订单 按钮组结束-->
 

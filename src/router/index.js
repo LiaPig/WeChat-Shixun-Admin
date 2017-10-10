@@ -13,7 +13,6 @@ import PictureAdd from 'View/picture/add/add.vue'
 import PictureModify from 'View/picture/modify/modify.vue'
 import Order from 'View/order/order.vue'
 import OrderDetails from 'View/order/details/details.vue'
-import OrderAdd from 'View/order/add/add.vue'
 import OrderModify from 'View/order/modify/modify.vue'
 import Tag from 'View/tag/tag.vue'
 import TagDetails from 'View/tag/details/details.vue'
@@ -132,14 +131,6 @@ const routes = [
           name: '订单详情页面'
         },
         component: OrderDetails
-      },
-      {
-        path: '/order/add',
-        name: 'orderAdd',
-        meta: {
-          name: '新增订单页面'
-        },
-        component: OrderAdd
       },
       {
         path: '/order/modify',
