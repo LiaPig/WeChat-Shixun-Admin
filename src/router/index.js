@@ -273,20 +273,20 @@ const router = new Router({
   routes // （缩写）相当于 routes: routes
 })
 
-const logout = () => {
+const clearInfo = () => {
   store.dispatch('LOGOUT')
 }
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(r => r.meta.auth)) {
-    let auth = store.state.Token
-    if (auth !== null && auth !== {}) {
+    let auth = store.state.UserInfo.id
+    if (auth !== null && auth !== {} && auth !== undefined) {
       next()
     } else {
-      logout()
       next({
         name: 'login'
       })
+      clearInfo()
     }
   } else {
     next()

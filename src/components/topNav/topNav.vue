@@ -6,7 +6,7 @@
     <el-menu theme="dark" mode="horizontal" class="username" router>
       <el-submenu index="1">
         <template slot="title">{{getUserInfo.username}}</template>
-        <el-menu-item class="username_item">
+        <el-menu-item index="1-1" class="username_item">
           <a href="javascript:" class="dropdown-btn" @click="user_logout">
             <i class="el-icon-minus"></i>
             退出登录

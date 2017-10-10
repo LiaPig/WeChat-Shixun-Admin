@@ -12,8 +12,6 @@ export default {
           if (response.body.success) {
             // 设置token
             const tokenInfo = response.body.data
-            console.log(tokenInfo)
-            // commit('SET_TOKEN', tokenInfo)
             Vue.http.get('/api/users/me', {
               headers: {
                 'Authorization': 'Bearer ' + tokenInfo.access_token
