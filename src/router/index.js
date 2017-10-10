@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '../store'
+
 import Login from 'Components/login/login.vue'
 import App from 'View/App.vue'
 import Home from 'View/home/home.vue'
@@ -46,7 +48,8 @@ const routes = [
         name: 'home',
         component: Home,
         meta: {
-          name: '首页'
+          name: '首页',
+          auth: true
         }
       },
       // 商品页面
@@ -55,14 +58,16 @@ const routes = [
         name: 'product',
         component: Product,
         meta: {
-          name: '商品管理'
+          name: '商品管理',
+          auth: true
         }
       },
       {
         path: '/product/details',
         name: 'productDetails',
         meta: {
-          name: '商品详情页面'
+          name: '商品详情页面',
+          auth: true
         },
         component: ProductDetails
       },
@@ -70,7 +75,8 @@ const routes = [
         path: '/product/add',
         name: 'productAdd',
         meta: {
-          name: '新增商品页面'
+          name: '新增商品页面',
+          auth: true
         },
         component: ProductAdd
       },
@@ -78,7 +84,8 @@ const routes = [
         path: '/product/modify',
         name: 'productModify',
         meta: {
-          name: '修改商品信息页面'
+          name: '修改商品信息页面',
+          auth: true
         },
         component: ProductModify
       },
@@ -88,14 +95,16 @@ const routes = [
         name: 'picture',
         component: Picture,
         meta: {
-          name: '商品管理'
+          name: '商品管理',
+          auth: true
         }
       },
       {
         path: '/picture/details',
         name: 'pictureDetails',
         meta: {
-          name: '商品详情页面'
+          name: '商品详情页面',
+          auth: true
         },
         component: PictureDetails
       },
@@ -103,7 +112,8 @@ const routes = [
         path: '/picture/add',
         name: 'pictureAdd',
         meta: {
-          name: '新增商品页面'
+          name: '新增商品页面',
+          auth: true
         },
         component: PictureAdd
       },
@@ -111,7 +121,8 @@ const routes = [
         path: '/picture/modify',
         name: 'pictureModify',
         meta: {
-          name: '修改商品信息页面'
+          name: '修改商品信息页面',
+          auth: true
         },
         component: PictureModify
       },
@@ -121,14 +132,16 @@ const routes = [
         name: 'order',
         component: Order,
         meta: {
-          name: '订单管理'
+          name: '订单管理',
+          auth: true
         }
       },
       {
         path: '/order/details',
         name: 'orderDetails',
         meta: {
-          name: '订单详情页面'
+          name: '订单详情页面',
+          auth: true
         },
         component: OrderDetails
       },
@@ -136,7 +149,8 @@ const routes = [
         path: '/order/modify',
         name: 'orderModify',
         meta: {
-          name: '修改订单信息页面'
+          name: '修改订单信息页面',
+          auth: true
         },
         component: OrderModify
       },
@@ -146,14 +160,16 @@ const routes = [
         name: 'tag',
         component: Tag,
         meta: {
-          name: '标签管理'
+          name: '标签管理',
+          auth: true
         }
       },
       {
         path: '/tag/details',
         name: 'tagDetails',
         meta: {
-          name: '标签详情页面'
+          name: '标签详情页面',
+          auth: true
         },
         component: TagDetails
       },
@@ -161,7 +177,8 @@ const routes = [
         path: '/tag/add',
         name: 'tagAdd',
         meta: {
-          name: '新增标签页面'
+          name: '新增标签页面',
+          auth: true
         },
         component: TagAdd
       },
@@ -169,7 +186,8 @@ const routes = [
         path: '/tag/modify',
         name: 'tagModify',
         meta: {
-          name: '修改标签信息页面'
+          name: '修改标签信息页面',
+          auth: true
         },
         component: TagModify
       },
@@ -179,14 +197,16 @@ const routes = [
         name: 'user',
         component: User,
         meta: {
-          name: '用户管理'
+          name: '用户管理',
+          auth: true
         }
       },
       {
         path: '/user/details',
         name: 'userDetails',
         meta: {
-          name: '用户详情页面'
+          name: '用户详情页面',
+          auth: true
         },
         component: UserDetails
       },
@@ -194,7 +214,8 @@ const routes = [
         path: '/user/add',
         name: 'userAdd',
         meta: {
-          name: '新增用户页面'
+          name: '新增用户页面',
+          auth: true
         },
         component: UserAdd
       },
@@ -202,7 +223,8 @@ const routes = [
         path: '/user/modify',
         name: 'userModify',
         meta: {
-          name: '修改用户信息页面'
+          name: '修改用户信息页面',
+          auth: true
         },
         component: UserModify
       },
@@ -212,14 +234,16 @@ const routes = [
         name: 'role',
         component: Role,
         meta: {
-          name: '角色管理'
+          name: '角色管理',
+          auth: true
         }
       },
       {
         path: '/role/details',
         name: 'roleDetails',
         meta: {
-          name: '角色详情页面'
+          name: '角色详情页面',
+          auth: true
         },
         component: RoleDetails
       },
@@ -227,7 +251,8 @@ const routes = [
         path: '/role/add',
         name: 'roleAdd',
         meta: {
-          name: '新增角色页面'
+          name: '新增角色页面',
+          auth: true
         },
         component: RoleAdd
       },
@@ -235,7 +260,8 @@ const routes = [
         path: '/role/modify',
         name: 'roleModify',
         meta: {
-          name: '修改角色信息页面'
+          name: '修改角色信息页面',
+          auth: true
         },
         component: RoleModify
       }
@@ -243,6 +269,24 @@ const routes = [
   }
 ]
 
-export default new Router({
-  routes: routes
+const router = new Router({
+  routes // （缩写）相当于 routes: routes
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(r => r.meta.auth)) {
+    let auth = store.state.UserInfo.id
+    if (auth != null) {
+      next()
+    } else {
+      next({
+        name: 'login'
+      })
+    }
+  } else {
+    next()
+  }
+})
+
+export default router
+

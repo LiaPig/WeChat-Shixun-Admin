@@ -29,7 +29,7 @@
 
       <!--状态开始-->
       <el-form-item label="状态" class="item">
-        <el-input v-model="order_data.status" :disabled="true"></el-input>
+        <el-input v-model="order_data.state" :disabled="true"></el-input>
       </el-form-item>
       <!--状态结束-->
 
