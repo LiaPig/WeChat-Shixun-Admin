@@ -1,11 +1,11 @@
 <template>
   <div class="top_side">
     <div>
-      <img src="./pig.png" class="userAva"/>
+      <img :src="getUserInfo.avatarUrl" class="userAva"/>
     </div>
     <el-menu theme="dark"  mode="horizontal" class="username" router>
       <el-submenu index="1">
-        <template slot="title">{{username}}</template>
+        <template slot="title">{{getUserInfo.username}}</template>
         <div v-for = "(item, index) in topNav_menu_data" :key="index">
           <el-menu-item :index="item.path" class="username_item">
             <i :class="item.icon"></i>
@@ -36,6 +36,14 @@
           }
         ]
       }
+    },
+    computed: {
+      getUserInfo: function () {
+        return this.$store.getters.GET_USER_INFO
+      }
+    },
+    created () {
+      console.log(this.$store.getters.GET_USER_INFO)
     }
   }
 </script>
